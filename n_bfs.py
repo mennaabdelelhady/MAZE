@@ -1,5 +1,6 @@
 import pygame
 from collections import deque
+import time
 
 # Initialize Pygame
 pygame.init()
@@ -93,6 +94,7 @@ def main():
 
     # Main game loop
     running = True
+    i = 0
     while running:
         # Handle events
         for event in pygame.event.get():
@@ -102,10 +104,10 @@ def main():
         # Draw the maze
         draw_maze()
 
-        # Draw the path
-        for i in range(len(path)-1):
-            curr = path[i]
-            next = path[i+1]
+        # Draw the path up to the current cell
+        for j in range(len(path[:i])-1):
+            curr = path[j]
+            next = path[j+1]
             pygame.draw.line(screen, BLUE, ((curr[1]+0.5)*CELL_WIDTH, (curr[0]+0.5)*CELL_HEIGHT), ((next[1]+0.5)*CELL_WIDTH, (next[0]+0.5)*CELL_HEIGHT), 5)
 
         # Update the screen
@@ -114,9 +116,16 @@ def main():
         # Tick the clock
         clock.tick(FPS)
 
+        # Wait for a short time
+        time.sleep(0.1)
+
+        # Increment the current cell counter
+        i += 1
+        if i >= len(path):
+            running = False
+
     # Quit Pygame
     pygame.quit()
 
 if __name__ == '__main__':
     main()
-
